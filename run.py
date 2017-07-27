@@ -6,7 +6,6 @@ import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 
-
 def GetTimeStr(time):
     return str(now.year % 100) + (('0' + str(now.month)) if now.month < 10 else str(now.month)) + str(now.day)
 
@@ -27,8 +26,11 @@ if __name__ == "__main__":
         print('Start retrieving ' + nowString)
         page = requests.get('http://www.flycua.com/flight2014/nay-hny-' + nowString + '_CNY.html')
         url = 'http://www.flycua.com/flight2014/nay-hny-' + nowString + '_CNY.html'
-        driver = webdriver.Chrome("D:\SoftInstaller\chromedriver_win32\chromedriver.exe")
+
+        driver = webdriver.PhantomJS(
+            "E:\Dropbox\Dropbox\Soft\phantomjs-2.1.1-windows\phantomjs-2.1.1-windows\\bin\phantomjs.exe", 0)
         driver.get(url)
+
         html = driver.execute_script("return document.getElementsByTagName('html')[0].innerHTML")
         soup = BeautifulSoup(html, 'html.parser')
         info = soup.find_all('li', class_='active', title=GetTimeStr2(now))
@@ -44,6 +46,8 @@ if __name__ == "__main__":
                 if price <= 500:
                     with open("LowPriceOutput.txt", "a") as myfile:
                         myfile.write("nay-hny-" + nowString + ", Price: " + price + "\n")
+
+        driver.quit()
 
         now += datetime.timedelta(days=1)
         time.sleep(60)
