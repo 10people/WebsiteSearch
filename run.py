@@ -75,8 +75,8 @@ def WebsiteExecute(tag, count, now, gap, critical, fileWrite):
             print('type is:', e.__class__.__name__ + '\n')
             print_exc()
             print('Error retrieving ' + tag + nowString + '\n')
-            #with open('LowPriceOutput.txt', 'a') as myfile:
-                #myfile.write('Error retrieving ' + tag + nowString + '\n')
+            # with open('LowPriceOutput.txt', 'a') as myfile:
+            # myfile.write('Error retrieving ' + tag + nowString + '\n')
             continue
 
     return isCritical
@@ -98,13 +98,14 @@ if __name__ == '__main__':
             now += datetime.timedelta(days=1)
         nowString = GetUrlTime(now)
 
-        if WebsiteExecute('nay-hny-', 3, now, 60, 700, fileWrite):
+        if WebsiteExecute('nay-hny-', 3, now, 120, 700, fileWrite):
             while now.weekday() != 0:
                 now += datetime.timedelta(days=1)
-            if WebsiteExecute('hny-nay-', 3, now, 60, 700, fileWrite):
+            if WebsiteExecute('hny-nay-', 3, now, 120, 700, fileWrite):
                 with open('LowPriceOutput.txt', 'a') as myfile:
                     for i in range(0, fileWrite.__len__()):
                         myfile.write(str(fileWrite[i]))
+                    myfile.write('\n')
 
         realNow += datetime.timedelta(days=7)
 
