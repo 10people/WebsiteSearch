@@ -7,6 +7,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from traceback import print_exc
 
+
 def GetUrlTime(now):
     return str(now.year % 100) + \
            (('0' + str(now.month)) if now.month < 10 else str(now.month)) + \
@@ -32,7 +33,7 @@ def WebsiteExecute(tag, count, now, gap, critical, fileWrite):
         try:
             nowString = GetUrlTime(now)
             url = 'http://www.flycua.com/flight2014/' + tag + nowString + '_CNY.html'
-            print('Start retrieving ' + tag + nowString)
+            print('Start retrieving ' + tag + nowString + '\n')
 
             if platform == 'win32':
                 driver = webdriver.PhantomJS(
@@ -40,10 +41,10 @@ def WebsiteExecute(tag, count, now, gap, critical, fileWrite):
                 # driver = webdriver.Chrome('E:\Dropbox\Dropbox\Soft\chromedriver_win32\chromedriver.exe')
             elif platform == 'linux' or platform == 'linux2':
                 pass
-                driver = webdriver.PhantomJS('~phantomjs')
+                driver = webdriver.PhantomJS('/root/phantomjs')
                 # to implement
             else:
-                print('Abort retrieving cause platform not exist: ' + platform)
+                print('Abort retrieving cause platform not exist: ' + platform + '\n')
                 with open('LowPriceOutput.txt', 'a') as myfile:
                     myfile.write('Abort retrieving cause platform not exist: ' + platform + '\n')
                 break
@@ -59,12 +60,12 @@ def WebsiteExecute(tag, count, now, gap, critical, fileWrite):
                 soup2 = BeautifulSoup(str(info)[1:-1], 'html.parser')
                 info2 = soup2.find_all('b')
                 print(info2)
-                print('End retrieving ' + tag + nowString)
+                print('End retrieving ' + tag + nowString + '\n')
                 if str(info2).__len__() >= 10:
                     price = int(str(info2)[5:-5].replace(',', ''))
 
                     if price <= critical:
-                        print('Record low price ' + tag + nowString)
+                        print('Record low price ' + tag + nowString + '\n')
                         fileWrite += tag + nowString + ', Price: ' + str(price) + '\n'
                         isCritical = True
 
@@ -73,11 +74,11 @@ def WebsiteExecute(tag, count, now, gap, critical, fileWrite):
             now += datetime.timedelta(days=1)
             time.sleep(gap)
         except Exception as e:
-            print ('type is:', e.__class__.__name__)
+            print('type is:', e.__class__.__name__ + '\n')
             print_exc()
             print('Error retrieving ' + tag + nowString + '\n')
             with open('LowPriceOutput.txt', 'a') as myfile:
-                myfile.write('Error retrieving ' + tag + nowString)
+                myfile.write('Error retrieving ' + tag + nowString + '\n')
             continue
 
     return isCritical
@@ -99,10 +100,10 @@ if __name__ == '__main__':
         with open('LowPriceOutput.txt', 'a') as myfile:
             myfile.write(nowString + ' (CheckDate): \n')
 
-        if WebsiteExecute('nay-hny-', 3, now, 60, 500, fileWrite):
+        if WebsiteExecute('nay-hny-', 3, now, 60, 700, fileWrite):
             while now.weekday() != 0:
                 now += datetime.timedelta(days=1)
-            if WebsiteExecute('hny-nay-', 3, now, 60, 500, fileWrite):
+            if WebsiteExecute('hny-nay-', 3, now, 60, 700, fileWrite):
                 with open('LowPriceOutput.txt', 'a') as myfile:
                     myfile.write(fileWrite)
 
