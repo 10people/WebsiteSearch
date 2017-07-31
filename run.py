@@ -40,9 +40,7 @@ def WebsiteExecute(tag, count, now, gap, critical, fileWrite):
                     'E:\Dropbox\Dropbox\Soft\phantomjs-2.1.1-windows\phantomjs-2.1.1-windows\\bin\phantomjs.exe')
                 # driver = webdriver.Chrome('E:\Dropbox\Dropbox\Soft\chromedriver_win32\chromedriver.exe')
             elif platform == 'linux' or platform == 'linux2':
-                pass
                 driver = webdriver.PhantomJS('/root/phantomjs')
-                # to implement
             else:
                 print('Abort retrieving cause platform not exist: ' + platform + '\n')
                 with open('LowPriceOutput.txt', 'a') as myfile:
