@@ -20,8 +20,8 @@ def GetScriptTime(now):
            (('0' + str(now.day)) if now.day < 10 else str(now.day))
 
 
-def page_has_loaded(deiver):
-    page_state = deiver.execute_script('return document.readyState')
+def page_has_loaded(driver):
+    page_state = driver.execute_script('return document.readyState')
     print('page_state: ' + page_state)
     return page_state == 'complete'
 
@@ -66,7 +66,7 @@ def WebsiteExecute(tag, count, now, gap, critical, fileWrite):
 
                     if price <= critical:
                         print('Record low price ' + tag + nowString + '\n')
-                        fileWrite += tag + nowString + ', Price: ' + str(price) + '\n'
+                        fileWrite.append(tag + nowString + ', Price: ' + str(price) + '\n')
                         isCritical = True
 
             driver.quit()
@@ -77,8 +77,8 @@ def WebsiteExecute(tag, count, now, gap, critical, fileWrite):
             print('type is:', e.__class__.__name__ + '\n')
             print_exc()
             print('Error retrieving ' + tag + nowString + '\n')
-            with open('LowPriceOutput.txt', 'a') as myfile:
-                myfile.write('Error retrieving ' + tag + nowString + '\n')
+            #with open('LowPriceOutput.txt', 'a') as myfile:
+                #myfile.write('Error retrieving ' + tag + nowString + '\n')
             continue
 
     return isCritical
@@ -86,26 +86,27 @@ def WebsiteExecute(tag, count, now, gap, critical, fileWrite):
 
 if __name__ == '__main__':
     realNow = datetime.datetime.now()
+    with open('LowPriceOutput.txt', 'a') as myfile:
+        myfile.write(GetUrlTime(realNow) + ' (CheckDate): \n')
+
     while realNow.weekday() != 2:
         realNow += datetime.timedelta(days=1)
 
     for i in range(0, 26):
-        fileWrite = ''
+        fileWrite = []
 
         now = realNow
         while now.weekday() != 2:
             now += datetime.timedelta(days=1)
         nowString = GetUrlTime(now)
 
-        with open('LowPriceOutput.txt', 'a') as myfile:
-            myfile.write(nowString + ' (CheckDate): \n')
-
         if WebsiteExecute('nay-hny-', 3, now, 60, 700, fileWrite):
             while now.weekday() != 0:
                 now += datetime.timedelta(days=1)
             if WebsiteExecute('hny-nay-', 3, now, 60, 700, fileWrite):
                 with open('LowPriceOutput.txt', 'a') as myfile:
-                    myfile.write(fileWrite)
+                    for i in range(0, fileWrite.__len__()):
+                        myfile.write(str(fileWrite[i]))
 
         realNow += datetime.timedelta(days=7)
 
