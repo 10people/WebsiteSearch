@@ -5,7 +5,7 @@ import time
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
-
+from traceback import print_exc
 
 def GetUrlTime(now):
     return str(now.year % 100) + \
@@ -72,7 +72,9 @@ def WebsiteExecute(tag, count, now, gap, critical, fileWrite):
 
             now += datetime.timedelta(days=1)
             time.sleep(gap)
-        except:
+        except Exception as e:
+            print ('type is:', e.__class__.__name__)
+            print_exc()
             print('Error retrieving ' + tag + nowString + '\n')
             with open('LowPriceOutput.txt', 'a') as myfile:
                 myfile.write('Error retrieving ' + tag + nowString)
