@@ -87,14 +87,14 @@ if __name__ == '__main__':
     with open('LowPriceOutput.txt', 'a') as myfile:
         myfile.write(GetUrlTime(realNow) + ' (CheckDate): \n')
 
-    while realNow.weekday() != 2:
+    while realNow.weekday() != 3:
         realNow += datetime.timedelta(days=1)
 
     for i in range(0, 26):
         fileWrite = []
 
         now = realNow
-        while now.weekday() != 2:
+        while now.weekday() != 3:
             now += datetime.timedelta(days=1)
         nowString = GetUrlTime(now)
 
