@@ -1,5 +1,6 @@
-from sys import platform
 import sys
+from sys import platform
+import os
 import datetime
 import time
 from bs4 import BeautifulSoup
@@ -84,6 +85,7 @@ def WebsiteExecute(tag, count, now, gap, critical, fileWrite):
 
 if __name__ == '__main__':
     realNow = datetime.datetime.now()
+    os.remove('LowPriceOutput.txt')
     with open('LowPriceOutput.txt', 'a') as myfile:
         myfile.write(GetUrlTime(realNow) + ' (CheckDate): \n')
 
