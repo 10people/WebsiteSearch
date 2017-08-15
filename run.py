@@ -85,7 +85,8 @@ def WebsiteExecute(tag, count, now, gap, critical, fileWrite):
 
 if __name__ == '__main__':
     realNow = datetime.datetime.now()
-    os.remove('LowPriceOutput.txt')
+    if os.path.isfile('LowPriceOutput.txt'):
+        os.remove('LowPriceOutput.txt')
     with open('LowPriceOutput.txt', 'a') as myfile:
         myfile.write(GetUrlTime(realNow) + ' (CheckDate): \n')
 
