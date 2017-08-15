@@ -1,2 +1,6 @@
 /.idea/
+/docs/
+/itchat/
 LowPriceOutput.txt
+mkdocs.yml
+setup.py
