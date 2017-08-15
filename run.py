@@ -85,7 +85,9 @@ def WebsiteExecute(tag, count, now, gap, critical, fileWrite):
 
 
 if __name__ == '__main__':
-    '''
+
+    itchat.auto_login(hotReload=True)
+    
     realNow = datetime.datetime.now()
     if os.path.isfile('LowPriceOutput.txt'):
         os.remove('LowPriceOutput.txt')
@@ -118,11 +120,9 @@ if __name__ == '__main__':
         realNow += datetime.timedelta(days=7)
 
     if isLow:
-    '''
-    itchat.auto_login(hotReload=True)
-    for item in itchat.get_friends():
-        if item['NickName'] == 'Taylor Liang':
-            itchat.send('Hello, taylor', toUserName=item['UserName'])
-            break
+        for item in itchat.get_friends():
+            if item['NickName'] == 'Taylor Liang':
+                itchat.send('Hello, taylor', toUserName=item['UserName'])
+                break
 
-    sys.exit(0)
+sys.exit(0)
