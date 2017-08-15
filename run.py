@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from traceback import print_exc
+import itchat
 
 
 def GetUrlTime(now):
@@ -84,6 +85,7 @@ def WebsiteExecute(tag, count, now, gap, critical, fileWrite):
 
 
 if __name__ == '__main__':
+    '''
     realNow = datetime.datetime.now()
     if os.path.isfile('LowPriceOutput.txt'):
         os.remove('LowPriceOutput.txt')
@@ -92,6 +94,8 @@ if __name__ == '__main__':
 
     while realNow.weekday() != 3:
         realNow += datetime.timedelta(days=1)
+
+    isLow = False
 
     for i in range(0, 26):
         fileWrite = []
@@ -105,11 +109,20 @@ if __name__ == '__main__':
             while now.weekday() != 0:
                 now += datetime.timedelta(days=1)
             if WebsiteExecute('hny-nay-', 3, now, 120, 700, fileWrite):
+                isLow = True
                 with open('LowPriceOutput.txt', 'a') as myfile:
                     for i in range(0, fileWrite.__len__()):
                         myfile.write(str(fileWrite[i]))
                     myfile.write('\n')
 
         realNow += datetime.timedelta(days=7)
+
+    if isLow:
+    '''
+    itchat.auto_login(hotReload=True)
+    for item in itchat.get_friends():
+        if item['NickName'] == 'Taylor Liang':
+            itchat.send('Hello, taylor', toUserName=item['UserName'])
+            break
 
     sys.exit(0)
