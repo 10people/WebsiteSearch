@@ -87,7 +87,7 @@ def WebsiteExecute(tag, count, now, gap, critical, fileWrite):
 if __name__ == '__main__':
 
     itchat.auto_login(hotReload=True)
-    
+
     realNow = datetime.datetime.now()
     if os.path.isfile('LowPriceOutput.txt'):
         os.remove('LowPriceOutput.txt')
@@ -122,7 +122,8 @@ if __name__ == '__main__':
     if isLow:
         for item in itchat.get_friends():
             if item['NickName'] == 'Taylor Liang':
-                itchat.send('Hello, taylor', toUserName=item['UserName'])
+                with open('LowPriceOutput.txt') as myfile:
+                    itchat.send(myfile.read(), toUserName=item['UserName'])
                 break
 
 sys.exit(0)
