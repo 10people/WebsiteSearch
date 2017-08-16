@@ -86,44 +86,53 @@ def WebsiteExecute(tag, count, now, gap, critical, fileWrite):
 
 if __name__ == '__main__':
 
-    itchat.auto_login(hotReload=True)
+    while True:
+        itchat.auto_login(hotReload=True)
+        '''
+        realNow = datetime.datetime.now()
+        if os.path.isfile('LowPriceOutput.txt'):
+            os.remove('LowPriceOutput.txt')
+        with open('LowPriceOutput.txt', 'a') as myfile:
+            myfile.write(GetUrlTime(realNow) + ' (CheckDate): \n')
 
-    realNow = datetime.datetime.now()
-    if os.path.isfile('LowPriceOutput.txt'):
-        os.remove('LowPriceOutput.txt')
-    with open('LowPriceOutput.txt', 'a') as myfile:
-        myfile.write(GetUrlTime(realNow) + ' (CheckDate): \n')
+        while realNow.weekday() != 3:
+            realNow += datetime.timedelta(days=1)
 
-    while realNow.weekday() != 3:
-        realNow += datetime.timedelta(days=1)
+        isLow = False
 
-    isLow = False
+        for i in range(0, 26):
+            fileWrite = []
 
-    for i in range(0, 26):
-        fileWrite = []
-
-        now = realNow
-        while now.weekday() != 3:
-            now += datetime.timedelta(days=1)
-        nowString = GetUrlTime(now)
-
-        if WebsiteExecute('nay-hny-', 3, now, 120, 700, fileWrite):
-            while now.weekday() != 0:
+            now = realNow
+            while now.weekday() != 3:
                 now += datetime.timedelta(days=1)
-            if WebsiteExecute('hny-nay-', 3, now, 120, 700, fileWrite):
-                isLow = True
-                with open('LowPriceOutput.txt', 'a') as myfile:
-                    for i in range(0, fileWrite.__len__()):
-                        myfile.write(str(fileWrite[i]))
-                    myfile.write('\n')
+            nowString = GetUrlTime(now)
 
-        realNow += datetime.timedelta(days=7)
+            if WebsiteExecute('nay-hny-', 3, now, 120, 700, fileWrite):
+                while now.weekday() != 0:
+                    now += datetime.timedelta(days=1)
+                if WebsiteExecute('hny-nay-', 3, now, 120, 700, fileWrite):
+                    isLow = True
+                    with open('LowPriceOutput.txt', 'a') as myfile:
+                        for i in range(0, fileWrite.__len__()):
+                            myfile.write(str(fileWrite[i]))
+                        myfile.write('\n')
 
-    if isLow:
+            realNow += datetime.timedelta(days=7)
+
+        if isLow:
+            for item in itchat.get_friends():
+                if item['NickName'] == 'Taylor Liang':
+                    with open('LowPriceOutput.txt') as myfile:
+                        itchat.send(myfile.read(), toUserName=item['UserName'])
+                    break
+        '''
         for item in itchat.get_friends():
             if item['NickName'] == 'Taylor Liang':
                 with open('LowPriceOutput.txt') as myfile:
                     itchat.send(myfile.read(), toUserName=item['UserName'])
                 break
+        time.sleep(10)
+        #time.sleep((24 - datetime.datetime.now().hour) * 3600)
 
 sys.exit(0)
