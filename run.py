@@ -88,7 +88,7 @@ if __name__ == '__main__':
 
     while True:
         itchat.auto_login(hotReload=True)
-        '''
+
         realNow = datetime.datetime.now()
         if os.path.isfile('LowPriceOutput.txt'):
             os.remove('LowPriceOutput.txt')
@@ -126,13 +126,7 @@ if __name__ == '__main__':
                     with open('LowPriceOutput.txt') as myfile:
                         itchat.send(myfile.read(), toUserName=item['UserName'])
                     break
-        '''
-        for item in itchat.get_friends():
-            if item['NickName'] == 'Taylor Liang':
-                with open('LowPriceOutput.txt') as myfile:
-                    itchat.send(myfile.read(), toUserName=item['UserName'])
-                break
-        time.sleep(10)
-        #time.sleep((24 - datetime.datetime.now().hour) * 3600)
+
+        time.sleep((24 - datetime.datetime.now().hour) * 3600)
 
 sys.exit(0)
